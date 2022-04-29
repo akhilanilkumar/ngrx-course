@@ -1,15 +1,15 @@
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { noop } from 'rxjs';
+import { tap } from 'rxjs/operators';
+import { AuthAction } from '../auth.action';
+import { AuthService } from '../auth.service';
+import { AuthState } from '../reducers';
 import { User } from './../model/user.model';
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 
-import { Store } from "@ngrx/store";
 
-import { AuthService } from "../auth.service";
-import { tap } from "rxjs/operators";
-import { noop } from "rxjs";
-import { Router } from "@angular/router";
-import { AppState } from '../reducers';
-import { login } from '../auth.action';
 
 @Component({
   selector: 'login',
@@ -24,7 +24,7 @@ export class LoginComponent implements OnInit {
     private fb: FormBuilder,
     private auth: AuthService,
     private router: Router,
-    private store: Store<AppState>
+    private store: Store<AuthState>
   ) {
 
     this.form = fb.group({
@@ -44,16 +44,8 @@ export class LoginComponent implements OnInit {
       .pipe(
         tap((user: User) => {
           console.log(user);
-          /**
-           * {
-            type: 'Login Action',
-            payload: {
-              userProfile: user
-            }
-          }
-           */
-          this.store.dispatch(login({ user }));
-          this.router.navigateByUrl('/courses')
+          this.store.dispatch(AuthAction.login({ user }));
+          this.router.navigateByUrl('/courses');
         })
       )
       .subscribe(
