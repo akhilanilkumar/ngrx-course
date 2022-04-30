@@ -22,7 +22,12 @@ export const initialState: AuthState = {
   user: null
 };
 
+/**
+ * Reduce performs same function as reduce in JS
+ * Whenever the action event calls, the callback function will get invoked by ngrx.
+ */
 export const authReducer = createReducer(
   initialState,
-  on(AuthAction.login, (state, action) => ({ user: action.user }))
+  on(AuthAction.login, (state, action) => ({ user: action.user })),
+  on(AuthAction.logout, (state, action) => ({ user: undefined }))
 );
